@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutterapp2/data/DioManger.dart';
+import 'package:flutterapp2/model/TestModel.dart';
 
 void main() {
   runApp(MyApp());
@@ -53,6 +57,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  String message = 'You have pushed the button this many times:';
 
   void _incrementCounter() {
     setState(() {
@@ -65,14 +70,32 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void getHttp() async{
-    try{
-      Response response = await DioManger.getDioInstance().get("/users/firelion0725");
+  void getHttp() async {
+    try {
+      Response response = await DioManger.getDioInstance().get("/v2/banners");
+//      print(response.data);
+//      Map data = json.decode(response.data);
+//      TestModel t = TestModel.fromJson(data);
+      String testJson = await _loadTestJson();
+      print(testJson);
 
-      print(response.data);
-    }catch(e){
+      Map map = json.decode(testJson);
+      TestModel t = TestModel.fromJson(map);
+      print(t);
+
+      setState(() {
+//        print("aaaaaaaaa: ===  $data[\'status\']");
+        message = t.data[0].title;
+      });
+//      print(message);
+    } catch (e) {
       print(e);
     }
+  }
+
+  // 读取 assets 文件夹中的 person.json 文件
+  Future<String> _loadTestJson() async {
+    return await rootBundle.loadString('assets/test.json');
   }
 
   @override
@@ -110,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
+              '$message',
             ),
             Text(
               '$_counter',

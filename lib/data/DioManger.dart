@@ -3,21 +3,11 @@ import 'package:dio/dio.dart';
 class DioManger {
   static final int timeout = 60000;
 
-  factory DioManger() => sharedInstance();
-  static DioManger _instance;
-
-  static sharedInstance() {
-    if (_instance == null) {
-      _instance = DioManger();
-    }
-    return _instance;
-  }
-
   static Dio _dio;
 
   static Dio getDioInstance() {
     var options = BaseOptions(
-      baseUrl: "https://api.github.com",
+      baseUrl: "https://gank.io/api",
       connectTimeout: timeout,
       receiveTimeout: timeout,
     );
