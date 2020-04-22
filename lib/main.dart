@@ -38,30 +38,27 @@ class _MyHomePageState extends State<MyHomePage> {
   List<TeModel> bannerData;
 
   @override
+  void initState() {
+    super.initState();
+    getDataFromNet().then((value) {
+      setState(() {
+        bannerData = value;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: Container(
-          height: 300,
-          child: Swiper(
-            itemCount: bannerData != null && bannerData.length != null ? bannerData.length : 0,
-            //item数量
-            itemBuilder: (BuildContext context, int index) {
-              //item构建
-              return new Image.network(
-//                "https://www.wanandroid.com/blogimgs/acc23063-1884-4925-bdf8-0b0364a7243e.png",
-                bannerData[index].image,
-                fit: BoxFit.contain,
-              );
-            },
-          ),
-        ),
+        height: 300,
+        child: getSwiper(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: getHttp,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 
@@ -71,13 +68,34 @@ class _MyHomePageState extends State<MyHomePage> {
       Map<String, dynamic> map = response.data;
       TestModel t = TestModel.fromJson(map);
       print(t);
-
-      setState(() {
-//        message = t.data[0].title;
-        bannerData = t.data;
-      });
     } catch (e) {
       print(e);
+    }
+  }
+
+  Swiper getSwiper() {
+    return new Swiper(
+      itemHeight: 300,
+      itemCount: bannerData.length,
+      itemBuilder: (BuildContext context, int index) {
+        return new Image.network(
+          bannerData[index].image,
+          fit: BoxFit.cover,
+        );
+      },
+    );
+  }
+
+  Future<List<TeModel>> getDataFromNet() async {
+    List<TeModel> list = new List();
+    try {
+      Response response = await DioManger.getDioInstance().get("/v2/banners");
+      Map<String, dynamic> map = response.data;
+      TestModel t = TestModel.fromJson(map);
+      list = t.data;
+    } catch (e) {} finally {
+      // ignore: control_flow_in_finally
+      return list;
     }
   }
 
