@@ -15,9 +15,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-//      title: 'Flutter Demo',
+      title: '干货集中营',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
@@ -36,6 +36,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String message = 'You have pushed the button this many times:';
   List<TeModel> bannerData;
+  List<Image> imageList;
 
   @override
   void initState() {
@@ -43,6 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
     getDataFromNet().then((value) {
       setState(() {
         bannerData = value;
+        imageList = getImage();
       });
     });
   }
@@ -50,10 +52,15 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: new AppBar(
+        backgroundColor: new Color.fromARGB(50, 50, 50, 100),
+        title: new Text("干货集中营"),
+      ),
       body: Container(
+          child: Container(
         height: 300,
         child: getSwiper(),
-      ),
+      )),
       floatingActionButton: FloatingActionButton(
         onPressed: getHttp,
         tooltip: 'Increment',
@@ -78,12 +85,17 @@ class _MyHomePageState extends State<MyHomePage> {
       itemHeight: 300,
       itemCount: bannerData.length,
       itemBuilder: (BuildContext context, int index) {
-        return new Image.network(
-          bannerData[index].image,
-          fit: BoxFit.cover,
-        );
+        return imageList[index];
       },
     );
+  }
+
+  List<Image> getImage() {
+    List<Image> list = new List();
+    for (int i = 0; i < bannerData.length; i++) {
+      list.add(new Image.network(bannerData[i].image, fit: BoxFit.cover));
+    }
+    return list;
   }
 
   Future<List<TeModel>> getDataFromNet() async {
