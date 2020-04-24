@@ -6,6 +6,7 @@ import 'package:flutterapp2/data/DioManger.dart';
 import 'model/BannerListModel.dart';
 import 'model/BannerModel.dart';
 import 'model/TypeListModel.dart';
+import 'model/TypeModel.dart';
 
 void main() {
   runApp(MyApp());
@@ -35,8 +36,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String message = 'You have pushed the button this many times:';
-  List<BannerModel> bannerData;
-  List<Image> imageList;
+  List<BannerModel> bannerData = new List();
+  List<TypeModel> typeData = new List();
+  List<Image> imageList = new List();
+  List<Tab> tabs = new List();
 
   @override
   void initState() {
@@ -45,6 +48,12 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         bannerData = value;
         imageList = getImage();
+      });
+    });
+    getTypeDataFromNet().then((value) {
+      setState(() {
+        typeData = value.data;
+        tabs = getTabs();
       });
     });
   }
@@ -120,6 +129,14 @@ class _MyHomePageState extends State<MyHomePage> {
       // ignore: control_flow_in_finally
       return list;
     }
+  }
+
+  List<Tab> getTabs() {
+    List<Tab> list = new List();
+    for (int i = 0; i < typeData.length; i++) {
+      list.add(new Tab(text: typeData[i].title));
+    }
+    return list;
   }
 
   Future<TypeListModel> getTypeDataFromNet() async {
