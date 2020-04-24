@@ -1,20 +1,20 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'TeModel.dart';
+part of 'BannerModel.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-TeModel _$TeModelFromJson(Map<String, dynamic> json) {
-  return TeModel(
+BannerModel _$TeModelFromJson(Map<String, dynamic> json) {
+  return BannerModel(
     json['image'] as String,
     json['title'] as String,
     json['url'] as String,
   );
 }
 
-Map<String, dynamic> _$TeModelToJson(TeModel instance) => <String, dynamic>{
+Map<String, dynamic> _$TeModelToJson(BannerModel instance) => <String, dynamic>{
       'image': instance.image,
       'title': instance.title,
       'url': instance.url,

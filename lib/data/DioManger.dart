@@ -5,7 +5,7 @@ class DioManger {
 
   static Dio _dio;
 
-  static Dio getDioInstance() {
+  static Dio _getDioInstance() {
     var options = BaseOptions(
       baseUrl: "https://gank.io/api",
       connectTimeout: timeout,
@@ -41,7 +41,7 @@ class DioManger {
 
   static Dio dioInstance() {
     if (_dio == null) {
-      _dio = getDioInstance();
+      _dio = _getDioInstance();
     }
     return _dio;
   }
