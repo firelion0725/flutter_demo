@@ -6,7 +6,7 @@ part of 'BannerModel.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-BannerModel _$TeModelFromJson(Map<String, dynamic> json) {
+BannerModel _$BannerModelFromJson(Map<String, dynamic> json) {
   return BannerModel(
     json['image'] as String,
     json['title'] as String,
@@ -14,7 +14,8 @@ BannerModel _$TeModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$TeModelToJson(BannerModel instance) => <String, dynamic>{
+Map<String, dynamic> _$BannerModelToJson(BannerModel instance) =>
+    <String, dynamic>{
       'image': instance.image,
       'title': instance.title,
       'url': instance.url,

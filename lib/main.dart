@@ -2,9 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutterapp2/data/DioManger.dart';
-import 'package:flutterapp2/model/BannerListModel.dart';
 
+import 'model/BannerListModel.dart';
 import 'model/BannerModel.dart';
+import 'model/TypeListModel.dart';
 
 void main() {
   runApp(MyApp());
@@ -52,7 +53,17 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-
+        leading: new Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            );
+          },
+        ),
         backgroundColor: new Color.fromARGB(50, 50, 50, 100),
         title: new Text("干货集中营"),
       ),
@@ -62,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: getSwiper(),
       )),
       floatingActionButton: FloatingActionButton(
-        onPressed: getHttp,
+        onPressed: getTypeDataFromNet,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
@@ -111,4 +122,17 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Future<TypeListModel> getTypeDataFromNet() async {
+    TypeListModel t;
+    try {
+      Response response =
+          await DioManger.dioInstance().get("/v2/categories/GanHuo");
+      Map<String, dynamic> map = response.data;
+      t = TypeListModel.fromJson(map);
+    } catch (e) {} finally {
+      print("============>" + t.status.toString());
+      // ignore: control_flow_in_finally
+      return t;
+    }
+  }
 }

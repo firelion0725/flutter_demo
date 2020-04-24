@@ -6,7 +6,7 @@ part of 'BannerListModel.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-BannerListModel _$TestModelFromJson(Map<String, dynamic> json) {
+BannerListModel _$BannerListModelFromJson(Map<String, dynamic> json) {
   return BannerListModel(
     json['status'] as int,
     (json['data'] as List)
@@ -16,7 +16,8 @@ BannerListModel _$TestModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$TestModelToJson(BannerListModel instance) => <String, dynamic>{
+Map<String, dynamic> _$BannerListModelToJson(BannerListModel instance) =>
+    <String, dynamic>{
       'status': instance.status,
       'data': instance.data,
     };

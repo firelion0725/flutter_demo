@@ -1,7 +1,6 @@
 
 import 'package:json_annotation/json_annotation.dart';
-
-part 'TeModel.g.dart';
+part  'BannerModel.g.dart';
 @JsonSerializable()
 class BannerModel {
   String image;
@@ -10,6 +9,6 @@ class BannerModel {
 
   BannerModel(this.image, this.title, this.url);
 
-  factory BannerModel.fromJson(Map<String, dynamic> json) => _$TeModelFromJson(json);
-  Map<String, dynamic> toJson() => _$TeModelToJson(this);
+  factory BannerModel.fromJson(Map<String, dynamic> json) => _$BannerModelFromJson(json);
+  Map<String, dynamic> toJson() => _$BannerModelToJson(this);
 }
