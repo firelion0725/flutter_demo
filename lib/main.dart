@@ -36,10 +36,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String message = 'You have pushed the button this many times:';
-  List<BannerModel> bannerData = new List();
-  List<TypeModel> typeData = new List();
-  List<Image> imageList = new List();
-  List<Tab> tabs = new List();
+  List<BannerModel> bannerData;
+
+  List<TypeModel> typeData;
+
+  List<Image> imageList;
+
+  List<Tab> tabs;
 
   @override
   void initState() {
@@ -76,11 +79,28 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: new Color.fromARGB(50, 50, 50, 100),
         title: new Text("干货集中营"),
       ),
-      body: Container(
-          child: Container(
-        height: 300,
-        child: getSwiper(),
-      )),
+      body: Column(
+        children: <Widget>[
+          Container(
+            height: 300,
+            child: getSwiper(),
+          ),
+          DefaultTabController(
+            length: tabs.length,
+            child: Container(
+              color: Colors.grey,
+              child: TabBar(
+                labelColor: Colors.black38,
+                indicatorColor:Colors.cyan,
+                tabs: tabs,
+              ),
+            ),
+//            child: TabBar(
+//              tabs: tabs,
+//            ),
+          )
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: getTypeDataFromNet,
         tooltip: 'Increment',
@@ -111,6 +131,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   List<Image> getImage() {
+    if (bannerData == null) {
+      return new List();
+    }
     List<Image> list = new List();
     for (int i = 0; i < bannerData.length; i++) {
       list.add(new Image.network(bannerData[i].image, fit: BoxFit.cover));
