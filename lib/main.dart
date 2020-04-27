@@ -86,25 +86,43 @@ class _MyHomePageState extends State<MyHomePage> {
             child: getSwiper(),
           ),
           DefaultTabController(
-            length: tabs.length,
+            length: tabs == null ? 0 : tabs.length,
             child: Container(
               color: Colors.grey,
               child: TabBar(
                 labelColor: Colors.black38,
-                indicatorColor:Colors.cyan,
+                indicatorColor: Colors.cyan,
                 tabs: tabs,
               ),
             ),
-//            child: TabBar(
-//              tabs: tabs,
-//            ),
           )
         ],
       ),
+      drawer: getDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: getTypeDataFromNet,
         tooltip: 'Increment',
         child: Icon(Icons.add),
+      ),
+    );
+  }
+
+  Drawer getDrawer() {
+    return new Drawer(
+      child: new Column(
+        children: <Widget>[
+          new Padding(
+            padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
+            child: new Text(
+              "fsdkajdfnksdnf",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          new Image.asset(
+            "images/menu_title.jpg",
+          ),
+        ],
       ),
     );
   }
@@ -123,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Swiper getSwiper() {
     return new Swiper(
       itemHeight: 300,
-      itemCount: bannerData.length == null ? 0 : bannerData.length,
+      itemCount: bannerData == null ? 0 : bannerData.length,
       itemBuilder: (BuildContext context, int index) {
         return imageList[index];
       },
