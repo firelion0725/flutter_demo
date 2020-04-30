@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutterapp2/data/DioManger.dart';
+import 'package:flutterapp2/model/ListAllModel.dart';
+import 'package:flutterapp2/model/ListModel.dart';
 
 import 'model/BannerListModel.dart';
 import 'model/BannerModel.dart';
@@ -44,6 +46,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<Tab> tabs;
 
+  List<ListModel> listData;
+
+  List<Widget> listView;
+
   @override
   void initState() {
     super.initState();
@@ -57,6 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         typeData = value.data;
         tabs = getTabs();
+        getListDataFromNet(typeData[0].type);
       });
     });
   }
@@ -93,9 +100,23 @@ class _MyHomePageState extends State<MyHomePage> {
                 labelColor: Colors.black38,
                 indicatorColor: Colors.cyan,
                 tabs: tabs,
+                onTap: (index) {
+                  String type = typeData[index].type;
+                  getListDataFromNet(type);
+                },
               ),
             ),
-          )
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+//            itemExtent: 48.0,
+            itemBuilder: (BuildContext context, int index) {
+              return listView[index];
+//              return new ListTile(title: Text("$index"));
+            },
+//            itemCount: 10,
+            itemCount: listView == null ? 0 : listView.length,
+          ),
         ],
       ),
       drawer: getDrawer(),
@@ -192,5 +213,31 @@ class _MyHomePageState extends State<MyHomePage> {
       // ignore: control_flow_in_finally
       return t;
     }
+  }
+
+  Future<ListAllModel> getListDataFromNet(String type) async {
+    ListAllModel t;
+    try {
+      Response response = await DioManger.dioInstance()
+          .get("/v2/data/category/GanHuo/type/$type/page/1/count/10");
+      Map<String, dynamic> map = response.data;
+      t = ListAllModel.fromJson(map);
+      setState(() {
+        listData = t.data;
+        listView = initListView();
+      });
+    } catch (e) {} finally {
+      print("============>" + t.toString());
+      // ignore: control_flow_in_finally
+      return t;
+    }
+  }
+
+  List<Widget> initListView() {
+    List<Widget> views = new List();
+    for (int i = 0; i < listData.length; i++) {
+      views.add(new ListTile(title : Text(listData[i].title)));
+    }
+    return views;
   }
 }
